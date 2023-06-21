@@ -12,6 +12,8 @@ import models.utils as model_utils
 import time
 import MNN
 
+import compress
+
 F = MNN.expr
 nn = MNN.nn
 
@@ -66,6 +68,8 @@ def main():
         loop.close()
 
         # send the configuration to the server
+        if cfg['compress_method'] is not None:
+            client_config.seed = compress.param_compress(model=None, action=cfg['compress_method'], extra_info=cfg['compress_ratio'])
         communicate_with_server(client_config, comm_tag, action='send_config')
         comm_tag += 1
 
