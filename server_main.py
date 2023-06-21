@@ -15,6 +15,8 @@ from mpi4py import MPI
 import logging
 import MNN
 
+import compress as cprs
+
 F = MNN.expr
 
 random.seed(cfg['client_selection_seed'])
@@ -110,7 +112,16 @@ def main():
         communication_parallel(selected_clients, action="get_config")
 
         # aggregate the clients' local model parameters
-        aggregate_models(global_model, selected_clients)
+        if cfg['compress_method'] is None:
+            aggregate_models(global_model, selected_clients)   
+        else:
+            cprs.decompress_and_aggregate(global_model, selected_clients, cfg['compress_method'],cfg['compress_ratio'], GLOBAL_MODEL_PATH)
+
+        # debug window
+        # print(global_model.parameters[0].name)
+        # print(global_model.parameters[0].shape)
+        # print(global_model.parameters[0])
+
 
         # test the global model
         test_loss, test_acc, test_auc = test(global_model, test_loader, None)
