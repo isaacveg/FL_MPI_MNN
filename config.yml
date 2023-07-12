@@ -28,7 +28,7 @@ weight_decay: 0.0005
 client_num: 100                       # total number of clients (not the number of selected clients)
 epoch_num: 100
 local_iters: 30                      # local training step of the client in each epoch
-compress_method: random              # compress method, random/top_k/quant
+compress_method:               # compress method, random/top_k/quant
 compress_ratio: 0.5                # compress ratio, only used when method is random/top_k
 
 # CUDA
